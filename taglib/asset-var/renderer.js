@@ -1,4 +1,4 @@
-var getLassoRenderContext = require('lasso/taglib/getLassoRenderContext');
+var getLassoRenderContext = require('../getLassoRenderContext');
 
 module.exports = function (input, out) {
   var renderBody = input.renderBody;
