@@ -1,6 +1,6 @@
 {
   "name": "@ebay/lasso-marko-taglib",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "A taglib to use Marko with Lasso",
   "main": "index.js",
   "scripts": {
