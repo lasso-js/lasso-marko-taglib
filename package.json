@@ -1,5 +1,5 @@
 {
-  "name": "lasso-marko-taglib",
+  "name": "@ebay/lasso-marko-taglib",
   "version": "1.0.0",
   "description": "A taglib to use Marko with Lasso",
   "main": "index.js",

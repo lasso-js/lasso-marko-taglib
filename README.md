@@ -7,5 +7,5 @@ taglib using the following commands:
 
 ```bash
 npm install lasso-marko
-npm install lasso-marko-taglib
+npm install @ebay/lasso-marko-taglib
 ```
