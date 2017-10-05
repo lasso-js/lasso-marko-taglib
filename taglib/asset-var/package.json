@@ -1,0 +1,5 @@
+{
+  "browser": {
+    "./renderer.js": "./renderer.browser.js"
+  }
+}

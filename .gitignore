@@ -1,0 +1,9 @@
+node_modules/
+*.marko.js
+actual.*
+actual-*
+/test/build
+/test/static
+.cache/
+.nyc_output/
+coverage/
