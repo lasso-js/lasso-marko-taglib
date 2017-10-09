@@ -1,7 +1,8 @@
-var getLassoRenderContext = require('./getLassoRenderContext');
-var lassoPageTag = require('./page-tag');
-var extend = require('raptor-util/extend');
-var path = require('path');
+const getLassoRenderContext = require('./getLassoRenderContext');
+const lassoPageTag = require('./page-tag');
+const extend = require('raptor-util/extend');
+const path = require('path');
+const util = require('./util');
 
 function isAttributePresent (attrs) {
   return !!(attrs.inlineStyleAttrs ||
@@ -45,7 +46,7 @@ module.exports = function render (input, out) {
   var slotName = input.name;
   var lassoRenderContext = getLassoRenderContext(out);
   var lassoPageResultAsyncValue = lassoRenderContext.data.lassoPageResult;
-  var timeout = lassoRenderContext.data.timeout;
+  var timeout = lassoRenderContext.data.timeout || util.getDefaultTimeout();
   var template = out.global.template;
   var templateHasMetaDeps = template && template.getDependencies;
 
