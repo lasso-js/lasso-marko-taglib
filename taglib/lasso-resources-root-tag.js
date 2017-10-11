@@ -54,13 +54,12 @@ module.exports = function render (input, out) {
   // TODO: Change to fully use async/await
   async.map(
     paths,
-    async function (path, callback) {
-      try {
-        const lassoResourceResult = await theLasso.lassoResource(path, lassoContext);
-        callback(null, lassoResourceResult);
-      } catch (err) {
-        callback(err);
-      }
+    function (path, callback) {
+      theLasso.lassoResource(path, lassoContext)
+        .then((lassoResourceResult) => {
+          callback(null, lassoResourceResult);
+        })
+        .catch(callback);
     },
     doRenderBody);
 
