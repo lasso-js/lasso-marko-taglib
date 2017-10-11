@@ -1,5 +1,5 @@
 var getLassoRenderContext = require('./getLassoRenderContext');
-var lassoImage = require('lasso/lib/plugins/lasso-image');
+var getImageInfo = require('lasso/getImageInfo');
 
 module.exports = function (out, path, callback) {
   var targetOut = out;
@@ -8,7 +8,7 @@ module.exports = function (out, path, callback) {
   var lassoRenderContext = getLassoRenderContext(out);
   var theLasso = lassoRenderContext.lasso;
 
-  lassoImage.getImageInfo(path, { lasso: theLasso, renderContext: out }, function (err, imageInfo) {
+  getImageInfo(path, { lasso: theLasso, renderContext: out }, function (err, imageInfo) {
     done = true;
     if (err) return targetOut.error(err);
 

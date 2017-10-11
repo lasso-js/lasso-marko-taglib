@@ -66,83 +66,79 @@ module.exports = function render (input, out) {
     }
   }
 
-  async function doLassoPage () {
-    try {
-      const lassoPageResult = await theLasso.lassoPage({
-        // Make sure the page is cached (should be the default)
-        cache: true,
+  function doLassoPage () {
+    return theLasso.lassoPage({
+      // Make sure the page is cached (should be the default)
+      cache: true,
 
-        cacheKey: cacheKey,
+      cacheKey: cacheKey,
 
-        // the page name (used for naming output bundles associated with this page)
-        pageName: pageName,
+      // the page name (used for naming output bundles associated with this page)
+      pageName: pageName,
 
-        // properties for the lasso context
-        data: lassoContextData,
+      // properties for the lasso context
+      data: lassoContextData,
 
-        // Provide base path for resolving relative top-level dependencies
-        from: input.module || input.dirname,
+      // Provide base path for resolving relative top-level dependencies
+      from: input.module || input.dirname,
 
-        // what is this for?
-        basePath: input.basePath,
+      // what is this for?
+      basePath: input.basePath,
 
-        // extensions to be enabled at time of rendering
-        flags: input.flags || input.enabledExtensions || input.extensions,
+      // extensions to be enabled at time of rendering
+      flags: input.flags || input.enabledExtensions || input.extensions,
 
-        async dependencies () {
-          var dependencies = input.dependencies;
-          var packagePath = input.packagePath;
-          var packagePaths = input.packagePaths;
+      dependencies () {
+        var dependencies = input.dependencies;
+        var packagePath = input.packagePath;
+        var packagePaths = input.packagePaths;
 
-          if (packagePath) {
-            if (input.dirname) {
-              packagePath = nodePath.resolve(input.dirname, packagePath);
-            }
-
-            dependencies = [
-              {
-                type: 'package',
-                'path': packagePath
-              }
-            ];
-          } else if (dependencies) {
-
-          } else if (packagePaths) {
-            dependencies = packagePaths.map(function (path) {
-              return {
-                type: 'package',
-                path: path
-              };
-            });
-          } else {
-            // Look for an browser.json in the same directory
-            if (input.dirname) {
-              packagePath = nodePath.join(input.dirname, 'browser.json');
-              // TODO: Since this is an async function, is there
-              // any reason why this is sync?
-              if (fs.existsSync(packagePath)) {
-                dependencies = [
-                  {
-                    type: 'package',
-                    path: packagePath
-                  }
-                ];
-              }
-            }
+        if (packagePath) {
+          if (input.dirname) {
+            packagePath = nodePath.resolve(input.dirname, packagePath);
           }
 
-          if (!dependencies && !packagePath && !packagePaths) {
-            dependencies = [];
-          }
+          dependencies = [
+            {
+              type: 'package',
+              'path': packagePath
+            }
+          ];
+        } else if (dependencies) {
 
-          return dependencies;
+        } else if (packagePaths) {
+          dependencies = packagePaths.map(function (path) {
+            return {
+              type: 'package',
+              path: path
+            };
+          });
+        } else {
+          // Look for an browser.json in the same directory
+          if (input.dirname) {
+            packagePath = nodePath.join(input.dirname, 'browser.json');
+            // TODO: Since this is an async function, is there
+            // any reason why this is sync?
+            if (fs.existsSync(packagePath)) {
+              dependencies = [
+                {
+                  type: 'package',
+                  path: packagePath
+                }
+              ];
+            }
+          }
         }
-      });
 
+        if (!dependencies && !packagePath && !packagePaths) {
+          dependencies = [];
+        }
+
+        return dependencies;
+      }
+    }).then((lassoPageResult) => {
       done(null, lassoPageResult);
-    } catch (err) {
-      done(err);
-    }
+    }).catch(done);
   }
 
   var waitFor = lassoRenderContext.getWaitFor();
