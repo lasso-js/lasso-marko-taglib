@@ -48,8 +48,12 @@ LassoRenderContext.prototype = {
   },
 
   getLassoConfig: function () {
-    var theLasso = this.data.lasso;
+    var theLasso = this.data.lasso || this.lasso;
     return theLasso.config;
+  },
+
+  getLasso () {
+    return this.lasso;
   }
 };
 

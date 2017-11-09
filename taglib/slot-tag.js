@@ -4,6 +4,8 @@ const extend = require('raptor-util/extend');
 const path = require('path');
 const util = require('./util');
 
+const IS_PREBUILD_ENABLED = process.env.PREBUILD == true; // eslint-disable-line eqeqeq
+
 function isAttributePresent (attrs) {
   return !!(attrs.inlineStyleAttrs ||
             attrs.inlineScriptAttrs ||
@@ -50,6 +52,29 @@ module.exports = function render (input, out) {
   var template = out.global.template;
   var templateHasMetaDeps = template && template.getDependencies;
 
+  const templatePath = template && template.path;
+
+  if (IS_PREBUILD_ENABLED) {
+    lassoRenderContext.emitBeforeSlot(slotName, out);
+
+    const lasso = lassoRenderContext.getLasso();
+
+    const asyncOut = out.beginAsync({
+      name: 'lasso-slot:' + slotName,
+      timeout: timeout
+    });
+
+    lasso.loadPrebuild({ path: templatePath })
+      .then((lassoPageResult) => {
+        renderSlot(input, lassoPageResult, asyncOut, lassoRenderContext);
+        asyncOut.end();
+      })
+      .catch((err) => {
+        process.nextTick(() => asyncOut.error(err));
+      });
+    return;
+  }
+
   if (!lassoPageResultAsyncValue) {
     var pageConfig = lassoRenderContext.data.config || {};
 
@@ -72,9 +97,9 @@ module.exports = function render (input, out) {
     }
 
     pageConfig.dependencies = dependencies;
-    pageConfig.cacheKey = pageConfig.cacheKey || (template && template.path);
+    pageConfig.cacheKey = pageConfig.cacheKey || templatePath;
     pageConfig.dirname = pageConfig.dirname || (template && path.dirname(template.path));
-    pageConfig.filename = pageConfig.filename || (template && template.path);
+    pageConfig.filename = pageConfig.filename || templatePath;
     pageConfig.flags = pageConfig.flags || out.global.flags || [];
 
     lassoPageTag(pageConfig, out);
