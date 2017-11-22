@@ -44,6 +44,12 @@ function renderSlot (attrs, lassoPageResult, out, lassoRenderContext) {
   lassoRenderContext.emitAfterSlot(slotName, out);
 }
 
+function getPrebuildPath (templatePath) {
+  // Remove full extension (.js or .marko.js)
+  templatePath = templatePath.split('.').slice(0, 1).join();
+  return `${templatePath}.prebuild.json`;
+}
+
 module.exports = function render (input, out) {
   var slotName = input.name;
   var lassoRenderContext = getLassoRenderContext(out);
@@ -64,7 +70,9 @@ module.exports = function render (input, out) {
       timeout: timeout
     });
 
-    lasso.loadPrebuild({ path: templatePath })
+    const prebuildPath = getPrebuildPath(templatePath);
+
+    lasso.loadPrebuild({ path: prebuildPath })
       .then((lassoPageResult) => {
         renderSlot(input, lassoPageResult, asyncOut, lassoRenderContext);
         asyncOut.end();
