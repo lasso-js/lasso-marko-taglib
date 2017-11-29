@@ -4,8 +4,6 @@ const extend = require('raptor-util/extend');
 const path = require('path');
 const util = require('./util');
 
-const IS_PREBUILD_ENABLED = process.env.PREBUILD == true; // eslint-disable-line eqeqeq
-
 function isAttributePresent (attrs) {
   return !!(attrs.inlineStyleAttrs ||
             attrs.inlineScriptAttrs ||
@@ -59,8 +57,9 @@ module.exports = function render (input, out) {
   var templateHasMetaDeps = template && template.getDependencies;
 
   const templatePath = template && template.path;
+  const lassoConfig = lassoRenderContext.getLassoConfig();
 
-  if (IS_PREBUILD_ENABLED) {
+  if (lassoConfig.getLoadPrebuild && lassoConfig.getLoadPrebuild()) {
     lassoRenderContext.emitBeforeSlot(slotName, out);
 
     const lasso = lassoRenderContext.getLasso();
