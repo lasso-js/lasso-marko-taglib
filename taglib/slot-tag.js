@@ -62,7 +62,7 @@ module.exports = function render (input, out) {
     if (template && lassoRenderContext.lasso.dependencies.getType('marko-hydrate')) {
       dependencies = ['marko-hydrate: ' + template.path.replace('.marko.js', '.marko')];
     } else {
-      dependencies = template.getDependencies();
+      dependencies = templateHasMetaDeps ? template.getDependencies() : [];
     }
 
     if (pageConfig.packagePaths) {
