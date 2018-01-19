@@ -59,7 +59,7 @@ module.exports = function render (input, out) {
   const templatePath = template && template.path;
   const lassoConfig = lassoRenderContext.getLassoConfig();
 
-  if (lassoConfig.getLoadPrebuild && lassoConfig.getLoadPrebuild()) {
+  if (lassoConfig.getLoadPrebuild && templatePath && lassoConfig.getLoadPrebuild()) {
     lassoRenderContext.emitBeforeSlot(slotName, out);
 
     const lasso = lassoRenderContext.getLasso();
