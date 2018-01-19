@@ -6,6 +6,21 @@ const rmdirRecursive = require('./util/rmdirRecursive');
 const buildDir = nodePath.join(__dirname, 'build');
 const fs = require('fs');
 
+const MARKO_INIT_REGEX = /^.*(src="((.*?))\.marko.init-((.*?)\.)js").*$/gm;
+
+function replaceMarkoInit (html) {
+  MARKO_INIT_REGEX.lastIndex = 0;
+  const regexMarkoInit = MARKO_INIT_REGEX.exec(html);
+
+  if (regexMarkoInit) {
+    const srcAttr = regexMarkoInit[1];
+    const hashAttr = regexMarkoInit[5];
+    html = html.replace(srcAttr, `src="/static/template.marko.init-${hashAttr}.js"`);
+  }
+
+  return html;
+}
+
 describe('lasso/taglib', function () {
   require('./autotest').scanDir(
     nodePath.join(__dirname, 'autotests/taglib'),
@@ -69,6 +84,7 @@ describe('lasso/taglib', function () {
           }
 
           html = html.replace(/\$\d+\.\d+\.\d+/g, '$*');
+          html = replaceMarkoInit(html);
 
           try {
             if (main.check) {
