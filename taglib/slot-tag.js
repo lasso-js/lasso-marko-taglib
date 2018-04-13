@@ -42,6 +42,12 @@ function renderSlot (attrs, lassoPageResult, out, lassoRenderContext) {
   lassoRenderContext.emitAfterSlot(slotName, out);
 }
 
+function getPrebuildPath (templatePath) {
+  // Remove full extension (.js or .marko.js)
+  templatePath = templatePath.split('.').slice(0, 1).join();
+  return `${templatePath}.prebuild.json`;
+}
+
 module.exports = function render (input, out) {
   var slotName = input.name;
   var lassoRenderContext = getLassoRenderContext(out);
@@ -49,6 +55,32 @@ module.exports = function render (input, out) {
   var timeout = lassoRenderContext.data.timeout || util.getDefaultTimeout();
   var template = out.global.template;
   var templateHasMetaDeps = template && template.getDependencies;
+
+  const templatePath = template && template.path;
+  const lassoConfig = lassoRenderContext.getLassoConfig();
+
+  if (lassoConfig.getLoadPrebuild && templatePath && lassoConfig.getLoadPrebuild()) {
+    lassoRenderContext.emitBeforeSlot(slotName, out);
+
+    const lasso = lassoRenderContext.getLasso();
+
+    const asyncOut = out.beginAsync({
+      name: 'lasso-slot:' + slotName,
+      timeout: timeout
+    });
+
+    const prebuildPath = getPrebuildPath(templatePath);
+
+    lasso.loadPrebuild({ path: prebuildPath })
+      .then((lassoPageResult) => {
+        renderSlot(input, lassoPageResult, asyncOut, lassoRenderContext);
+        asyncOut.end();
+      })
+      .catch((err) => {
+        process.nextTick(() => asyncOut.error(err));
+      });
+    return;
+  }
 
   if (!lassoPageResultAsyncValue) {
     var pageConfig = lassoRenderContext.data.config || {};
@@ -78,9 +110,9 @@ module.exports = function render (input, out) {
     }
 
     pageConfig.dependencies = dependencies;
-    pageConfig.cacheKey = pageConfig.cacheKey || (template && template.path);
+    pageConfig.cacheKey = pageConfig.cacheKey || templatePath;
     pageConfig.dirname = pageConfig.dirname || (template && path.dirname(template.path));
-    pageConfig.filename = pageConfig.filename || (template && template.path);
+    pageConfig.filename = pageConfig.filename || templatePath;
     pageConfig.flags = pageConfig.flags || out.global.flags || [];
 
     lassoPageTag(pageConfig, out);
