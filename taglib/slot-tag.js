@@ -43,8 +43,8 @@ function renderSlot (attrs, lassoPageResult, out, lassoRenderContext) {
 }
 
 function getPrebuildPath (templatePath) {
-  // Remove full extension (.js or .marko.js)
-  templatePath = templatePath.split('.').slice(0, 1).join();
+  // Remove full extension (.marko.js or .js)
+  templatePath = templatePath.replace(/(.marko.js|.js)/, '');
   return `${templatePath}.prebuild.json`;
 }
 
