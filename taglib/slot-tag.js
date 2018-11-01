@@ -58,6 +58,8 @@ module.exports = function render (input, out) {
 
   const templatePath = template && template.path;
   const lassoConfig = lassoRenderContext.getLassoConfig();
+  const pageConfig = lassoRenderContext.data.config || {};
+  pageConfig.flags = pageConfig.flags || out.global.flags || [];
 
   if (lassoConfig.getLoadPrebuild && templatePath && lassoConfig.getLoadPrebuild()) {
     lassoRenderContext.emitBeforeSlot(slotName, out);
@@ -71,7 +73,7 @@ module.exports = function render (input, out) {
 
     const prebuildPath = getPrebuildPath(templatePath);
 
-    lasso.loadPrebuild({ path: prebuildPath })
+    lasso.loadPrebuild({ path: prebuildPath, flags: pageConfig.flags })
       .then((lassoPageResult) => {
         renderSlot(input, lassoPageResult, asyncOut, lassoRenderContext);
         asyncOut.end();
@@ -83,8 +85,6 @@ module.exports = function render (input, out) {
   }
 
   if (!lassoPageResultAsyncValue) {
-    var pageConfig = lassoRenderContext.data.config || {};
-
     if (!templateHasMetaDeps && !pageConfig.dependencies && !pageConfig.packagePaths) {
       throw new Error('Lasso page result not found for slot "' + slotName + '". The <lasso-page> tag should be used to lasso the page.');
     }
@@ -113,7 +113,6 @@ module.exports = function render (input, out) {
     pageConfig.cacheKey = pageConfig.cacheKey || templatePath;
     pageConfig.dirname = pageConfig.dirname || (template && path.dirname(template.path));
     pageConfig.filename = pageConfig.filename || templatePath;
-    pageConfig.flags = pageConfig.flags || out.global.flags || [];
 
     lassoPageTag(pageConfig, out);
 
