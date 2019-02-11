@@ -18,8 +18,11 @@ module.exports = function (input, out) {
   var lassoContext = lassoRenderContext.data.lassoContext;
 
   if (!lassoContext) {
-    lassoContext = lassoRenderContext.data.lassoContext = theLasso.createLassoContext({});
-    lassoContext.renderContext = out;
+    lassoContext = lassoRenderContext.data.lassoContext = theLasso.createLassoContext({
+      data: {
+        renderContext: out
+      }
+    });
   }
 
   var asyncOut = out.beginAsync();
