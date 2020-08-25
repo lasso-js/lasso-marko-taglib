@@ -5,7 +5,7 @@
       "attributes":{
         "name":"string",
         "cache-key":"string",
-        "package-path":"path",
+        "package-path":"string",
         "package-paths":"array",
         "base-path":"string",
         "lasso":"lasso/Lasso",
