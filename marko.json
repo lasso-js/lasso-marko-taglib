@@ -89,7 +89,7 @@
     "lasso-img":{
       "code-generator":"./taglib/lasso-img-tag",
       "attributes":{
-        "src":"path",
+        "src":"string",
         "*":{
           "ignore":true
         }
@@ -117,7 +117,7 @@
       "transformer":"./taglib/lasso-resource-tag-transform",
       "no-output":true,
       "attributes":{
-        "path":"path",
+        "path":"string",
         "var":"string"
       },
       "autocomplete":[
