@@ -5,7 +5,7 @@
       "attributes":{
         "name":"string",
         "cache-key":"string",
-        "package-path":"path",
+        "package-path":"string",
         "package-paths":"array",
         "base-path":"string",
         "lasso":"lasso/Lasso",
@@ -89,8 +89,9 @@
     "lasso-img":{
       "code-generator":"./taglib/lasso-img-tag",
       "attributes":{
-        "src":"path",
+        "src":"string",
         "*":{
+          "target-property": "*",
           "ignore":true
         }
       },
@@ -117,7 +118,7 @@
       "transformer":"./taglib/lasso-resource-tag-transform",
       "no-output":true,
       "attributes":{
-        "path":"path",
+        "path":"string",
         "var":"string"
       },
       "autocomplete":[
@@ -150,6 +151,7 @@
       }
     },
     "*":{
+      "target-property": "*",
       "attributes":{
         "lasso-nonce":{
           "ignore":true
