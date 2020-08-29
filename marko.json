@@ -91,6 +91,7 @@
       "attributes":{
         "src":"string",
         "*":{
+          "target-property": "*",
           "ignore":true
         }
       },
@@ -150,6 +151,7 @@
       }
     },
     "*":{
+      "target-property": "*",
       "attributes":{
         "lasso-nonce":{
           "ignore":true
