@@ -1,6 +1,7 @@
 {
     "browser": {
         "./getLassoRenderContext.js": "./getLassoRenderContext-browser.js",
+        "./lasso-resources-root-tag.js": "./lasso-resources-root-tag-browser.js",
         "./body-tag.js": "./noop-render.js",
         "./config-tag.js": "./noop-render.js",
         "./head-tag.js": "./noop-render.js",
