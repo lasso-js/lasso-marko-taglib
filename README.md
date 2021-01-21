@@ -153,7 +153,7 @@ Example:
 
 ```html
 <lasso-resource path="./favicon.ico" var="favicon"/>
-<link rel="shortcut icon" href="${favicon.url}">
+<link rel="shortcut icon" href=favicon.url>
 ```
 
 The output will be similar to the following:

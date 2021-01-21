@@ -1,4 +1,0 @@
-{
-    "transformer":"./transformer.js",
-    "renderer":"./renderer.js"
-}

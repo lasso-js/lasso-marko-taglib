@@ -55,6 +55,7 @@ module.exports = function render (input, out) {
   var timeout = lassoRenderContext.data.timeout || util.getDefaultTimeout();
   var template = out.global.template;
   var templateHasMetaDeps = template && template.getDependencies;
+  var shouldHydrate = template && lassoRenderContext.lasso.dependencies.getType('marko-hydrate');
 
   const templatePath = template && template.path;
   const lassoConfig = lassoRenderContext.getLassoConfig();
@@ -85,15 +86,11 @@ module.exports = function render (input, out) {
   }
 
   if (!lassoPageResultAsyncValue) {
-    if (!templateHasMetaDeps && !pageConfig.dependencies && !pageConfig.packagePaths) {
-      throw new Error('Lasso page result not found for slot "' + slotName + '". The <lasso-page> tag should be used to lasso the page.');
-    }
-
     var dependencies;
 
-    if (template && lassoRenderContext.lasso.dependencies.getType('marko-hydrate')) {
+    if (shouldHydrate) {
       dependencies = ['marko-hydrate: ' + template.path.replace('.marko.js', '.marko')];
-    } else {
+    } else if (templateHasMetaDeps) {
       dependencies = templateHasMetaDeps ? template.getDependencies() : [];
     }
 
@@ -107,6 +104,10 @@ module.exports = function render (input, out) {
 
     if (out.global.dependencies) {
       dependencies = dependencies.concat(out.global.dependencies);
+    }
+
+    if (!dependencies) {
+      throw new Error('Lasso page result not found for slot "' + slotName + '". The <lasso-page> tag should be used to lasso the page.');
     }
 
     pageConfig.dependencies = dependencies;

@@ -2,6 +2,7 @@
   "tags":{
     "lasso-page":{
       "renderer":"./taglib/config-tag",
+      "transformer":"./taglib/config-tag-transformer",
       "attributes":{
         "name":"string",
         "cache-key":"string",
@@ -27,13 +28,9 @@
           ]
         },
         "wait-for":"Promise",
-        "timeout":"integer"
-      },
-      "no-output":true,
-      "body-function":"getDependencies(_dependenciesParent)",
-      "import-var":{
-        "dirname":"__dirname",
-        "filename":"__filename"
+        "timeout":"integer",
+        "dirname": "string",
+        "filename": "string"
       },
       "autocomplete":[
         {
@@ -87,7 +84,7 @@
       ]
     },
     "lasso-img":{
-      "code-generator":"./taglib/lasso-img-tag",
+      "code-generator":"./taglib/lasso-img-tag-translate",
       "attributes":{
         "src":"path",
         "*":{
@@ -115,7 +112,6 @@
     },
     "lasso-resource":{
       "transformer":"./taglib/lasso-resource-tag-transform",
-      "no-output":true,
       "attributes":{
         "path":"path",
         "var":"string"
@@ -141,12 +137,6 @@
     "head":{
       "transformer":{
         "path":"./taglib/head/transformer.js"
-      }
-    },
-    "asset-var":{
-      "renderer":"./taglib/asset-var/renderer.js",
-      "transformer":{
-        "path":"./taglib/asset-var/transformer.js"
       }
     },
     "*":{
