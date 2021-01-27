@@ -1,6 +1,6 @@
 {
   "name": "@lasso/marko-taglib",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "A taglib to use Marko with Lasso",
   "main": "index.js",
   "scripts": {
