@@ -99,11 +99,11 @@ module.exports = function render (input, out) {
     }
 
     if (pageConfig.dependencies) {
-      dependencies = dependencies.concat(pageConfig.dependencies);
+      dependencies = (dependencies || []).concat(pageConfig.dependencies);
     }
 
     if (out.global.dependencies) {
-      dependencies = dependencies.concat(out.global.dependencies);
+      dependencies = (dependencies || []).concat(out.global.dependencies);
     }
 
     if (!dependencies) {
