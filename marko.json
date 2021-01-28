@@ -141,7 +141,6 @@
       }
     },
     "*":{
-      "targetProperty": null,
       "attributes":{
         "lasso-nonce":{
           "ignore":true
