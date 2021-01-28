@@ -30,7 +30,7 @@
     "marko": ">=4.7.0 || ^5"
   },
   "devDependencies": {
-    "codecov": "^2.3.0",
+    "codecov": "^3.7.1",
     "eslint": "^4.8.0",
     "eslint-config-marko": "^1.0.1",
     "lasso": "^3.0.0",
