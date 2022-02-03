@@ -91,11 +91,11 @@ module.exports = function render (input, out) {
     if (shouldHydrate) {
       dependencies = ['marko-hydrate: ' + template.path.replace('.marko.js', '.marko')];
     } else if (templateHasMetaDeps) {
-      dependencies = templateHasMetaDeps ? template.getDependencies() : [];
+      dependencies = template.getDependencies();
     }
 
     if (pageConfig.packagePaths) {
-      dependencies = pageConfig.packagePaths.concat(dependencies);
+      dependencies = pageConfig.packagePaths.concat(dependencies || []);
     }
 
     if (pageConfig.dependencies) {
