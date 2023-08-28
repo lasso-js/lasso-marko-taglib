@@ -131,14 +131,10 @@
       ]
     },
     "body":{
-      "transformer":{
-        "path":"./taglib/body/transformer.js"
-      }
+      "transformer": "./taglib/body/transformer.js"
     },
     "head":{
-      "transformer":{
-        "path":"./taglib/head/transformer.js"
-      }
+      "transformer": "./taglib/head/transformer.js"
     },
     "*":{
       "attributes":{
@@ -146,9 +142,7 @@
           "ignore":true
         }
       },
-      "transformer":{
-        "path":"./taglib/lasso-tag-transformer"
-      }
+      "transformer": "./taglib/lasso-tag-transformer"
     }
   }
 }
