@@ -59,7 +59,7 @@ module.exports = function render (input, out) {
     paths,
     function (path, callback) {
       theLasso.lassoResource(path, lassoContext)
-        .then((lassoResourceResult) => {
+        .then(function (lassoResourceResult) {
           callback(null, lassoResourceResult);
         })
         .catch(callback);
